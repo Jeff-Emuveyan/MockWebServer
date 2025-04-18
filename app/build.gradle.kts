@@ -17,7 +17,7 @@ android {
 		versionCode = 1
 		versionName = "1.0"
 		
-		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+		testInstrumentationRunner = "com.example.mockwebserver.CustomTestRunner"
 	}
 	
 	buildTypes {
@@ -42,6 +42,7 @@ android {
 }
 
 dependencies {
+	implementation(project(":core"))
 	implementation(project(":feature:joke"))
 	implementation(libs.androidx.core.ktx)
 	implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -71,4 +72,12 @@ dependencies {
 	// serialization
 	implementation(libs.kotlinx.serialization.json)
 	implementation("javax.inject:javax.inject:1")
+	// mockwebserver
+	testImplementation(libs.mockwebserver)
+	// retrofit
+	implementation(libs.retrofit)
+	implementation(libs.retrofit.converter.gson)
+	implementation(libs.okhttp)
+	implementation(libs.okhttp.logging.interceptor)
+	implementation(libs.okhttp.converter.scalars)
 }
