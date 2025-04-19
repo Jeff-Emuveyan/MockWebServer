@@ -9,6 +9,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.core.network.RetrofitClient
 import com.example.core.network.di.RetrofitModule
 import com.example.joke.Screen
+import com.example.joke.TestActivity
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,10 +32,25 @@ import retrofit2.Retrofit
 class RequestAJokeFlowTest {
 	
 	@get:Rule
-	//val composeTestRule = createComposeRule() // won't work because it means we are trying to use
-	// hiltViewModel() (which is inside Screen) outside of an actual Hilt-backed Activity.
+			/***
+			 * We have three options to use to launch the composable:
+			 * 1) val composeTestRule = createComposeRule()
+			 * This won't work because it means we are trying to use
+			 * hiltViewModel() (which is inside Screen) outside of an actual Hilt-backed Activity.
+			 * In order words, when the Screen() composable is launched and hiltViewModel() is called,
+			 * hilt will not be able to create the viewmodel because it needs hiltViewModel() needs an
+			 * @AndroidEntryPoint activity to create its dependencies.
+			 *
+			 * 2) val composeTestRule = createAndroidComposeRule<MainActivity>()
+			 * This will work 100% but it means the test can only be run from the module where the MainActivity
+			 * is. In this case it will be the app module. We want the freedom to run tests from any module
+			 * not just the app module.
+			 * ***/
 	val composeTestRule = createAndroidComposeRule<TestActivity>()
-	//val composeTestRule = createAndroidComposeRule<MainActivity>()
+	/**
+	 * This is the best solution because we have created a dedicated TestActivity that is an
+	 * @AndroidEntryPoint activity and allows us to write our tests from any module.
+	 * ***/
 	
 	@get:Rule
 	var hiltRule = HiltAndroidRule(this)
@@ -49,19 +65,34 @@ class RequestAJokeFlowTest {
 	
 	@After
 	fun tearDown() {
+		// It is very important to shutdown the mock server after each test. Else, you will have
+		// issues with mockWebServer when there are more than one tests to run.
 		mockWebServer.shutdown()
 	}
 	
 	@Test
 	fun canRequestAndDisplayAJoke() {
-		/*mockWebServer.enqueue(MockResponse().setBody(
-			"""
-				{
-				    "setup": "The is a test setup",
-				    "punchline": "This is a test punchline"
-				}
-			""".trimIndent()
-		))*/
+		/***
+		 * There are two main ways to set up the response from mock web server when a network request is made:
+		 *
+		 * 1) mockWebServer.enqueue(MockResponse().setBody(
+		 * 			"""
+		 * 				{
+		 * 				    "setup": "The is a test setup",
+		 * 				    "punchline": "This is a test punchline"
+		 * 				}
+		 * 			""".trimIndent()
+		 * 		))
+		 * This works but it will pin the mockWebServer to always return the value inside .setBody() anytime a
+		 * network call is made. This is good if, during the test, your app will only make a network call to one endpoint.
+		 * But if your app will call multiple end points, the method will make mockWebServer return the
+		 * exact same json response each time, which is not what we would want.
+		 *
+		 * 2) mockWebServer.dispatcher = RequestAJokeFlowDispatcher()
+		 * The dispatcher allows us to prepare a unique response for each network request.
+		 * So if we have multiple endpoints that will be called during our test, the dispatcher makes it
+		 * possible for us to prepare a unique json response for each call to those endpoints.
+		 * ****/
 		mockWebServer.dispatcher = RequestAJokeFlowDispatcher()
 		
 		composeTestRule.onNodeWithText("Press the button to get a joke").performClick()
