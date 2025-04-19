@@ -23,6 +23,7 @@ kotlinxSerializationJson = "1.6.0"
 uiViewbinding = "1.7.8"
 permission = "0.36.0"
 gson = "2.9.0"
+runner = "1.6.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -59,6 +60,7 @@ androidx-ui-viewbinding = { group = "androidx.compose.ui", name = "ui-viewbindin
 viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version = "2.7.0" }
 permission = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "permission" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
