@@ -14,7 +14,7 @@ android {
 	defaultConfig {
 		minSdk = 28
 		
-		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+		testInstrumentationRunner = "com.example.joke.CustomTestRunner"
 		consumerProguardFiles("consumer-rules.pro")
 	}
 	
@@ -56,9 +56,14 @@ dependencies {
 	implementation(libs.androidx.ui.tooling.preview)
 	implementation(libs.androidx.material3)
 	implementation(libs.androidx.ui.viewbinding)
+	implementation(libs.hilt.android.testing)
 	testImplementation(libs.junit)
 	androidTestImplementation(libs.androidx.junit)
 	androidTestImplementation(libs.androidx.espresso.core)
+	androidTestImplementation(platform(libs.androidx.compose.bom))
+	androidTestImplementation(libs.androidx.ui.test.junit4)
+	debugImplementation(libs.androidx.ui.tooling)
+	debugImplementation(libs.androidx.ui.test.manifest)
 	// navigation graph
 	implementation(libs.navigation.graph)
 	// hilt
@@ -80,4 +85,13 @@ dependencies {
 	implementation(libs.androidx.ui.tooling.preview)
 	implementation(libs.permission)
 	implementation(libs.gson)
+	
+	// mockwebserver
+	androidTestImplementation(libs.mockwebserver)
+	// retrofit
+	implementation(libs.retrofit)
+	implementation(libs.retrofit.converter.gson)
+	implementation(libs.okhttp)
+	implementation(libs.okhttp.logging.interceptor)
+	implementation(libs.okhttp.converter.scalars)
 }

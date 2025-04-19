@@ -1,5 +1,6 @@
 package com.example.joke
 
+import android.util.Log
 import com.example.joke.model.JokeResponse
 import com.example.joke.remote.RemoteSource
 import kotlinx.coroutines.CoroutineDispatcher
@@ -14,6 +15,7 @@ internal class JokeRepositoryImpl @Inject constructor(
 		try {
 			remoteSource.getJoke()
 		} catch (e: Exception) {
+			Log.e("JEFF", e.message, e)
 			null
 		}
 	}
