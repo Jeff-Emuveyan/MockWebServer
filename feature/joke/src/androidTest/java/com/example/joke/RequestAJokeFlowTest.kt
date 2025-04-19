@@ -1,4 +1,4 @@
-package com.example.mockwebserver
+package com.example.joke
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -8,8 +8,6 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.core.network.RetrofitClient
 import com.example.core.network.di.RetrofitModule
-import com.example.joke.Screen
-import com.example.joke.TestActivity
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,20 +30,20 @@ import retrofit2.Retrofit
 class RequestAJokeFlowTest {
 	
 	@get:Rule
-			/***
-			 * We have three options to use to launch the composable:
-			 * 1) val composeTestRule = createComposeRule()
-			 * This won't work because it means we are trying to use
-			 * hiltViewModel() (which is inside Screen) outside of an actual Hilt-backed Activity.
-			 * In order words, when the Screen() composable is launched and hiltViewModel() is called,
-			 * hilt will not be able to create the viewmodel because it needs hiltViewModel() needs an
-			 * @AndroidEntryPoint activity to create its dependencies.
-			 *
-			 * 2) val composeTestRule = createAndroidComposeRule<MainActivity>()
-			 * This will work 100% but it means the test can only be run from the module where the MainActivity
-			 * is. In this case it will be the app module. We want the freedom to run tests from any module
-			 * not just the app module.
-			 * ***/
+	/***
+	 * We have three options to use to launch the composable:
+	 * 1) val composeTestRule = createComposeRule()
+	 * This won't work because it means we are trying to use
+	 * hiltViewModel() (which is inside Screen) outside of an actual Hilt-backed Activity.
+	 * In order words, when the Screen() composable is launched and hiltViewModel() is called,
+	 * hilt will not be able to create the viewmodel because it needs hiltViewModel() needs an
+	 * @AndroidEntryPoint activity to create its dependencies.
+	 *
+	 * 2) val composeTestRule = createAndroidComposeRule<MainActivity>()
+	 * This will work 100% but it means the test can only be run from the module where the MainActivity
+	 * is. In this case it will be the app module. We want the freedom to run tests from any module
+	 * not just the app module.
+	 * ***/
 	val composeTestRule = createAndroidComposeRule<TestActivity>()
 	/**
 	 * This is the best solution because we have created a dedicated TestActivity that is an
