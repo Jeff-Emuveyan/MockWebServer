@@ -73,7 +73,7 @@ dependencies {
 	implementation(libs.kotlinx.serialization.json)
 	implementation("javax.inject:javax.inject:1")
 	// mockwebserver
-	testImplementation(libs.mockwebserver)
+	androidTestImplementation(libs.mockwebserver)
 	// retrofit
 	implementation(libs.retrofit)
 	implementation(libs.retrofit.converter.gson)
